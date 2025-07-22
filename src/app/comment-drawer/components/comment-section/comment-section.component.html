@@ -1,4 +1,4 @@
-<div *ngIf="section$ | async as section" [commentElement]="'section'" [elementId]="sectionId" class="comment-section">
+<section *ngIf="section$ | async as section" [commentElement]="'section'" [elementId]="sectionId" class="comment-section" role="region" [attr.aria-label]="section.title">
     <h3 class="section-header flex-container flex-space-between">
         <button class="tertiary-button" (click)="onHeaderClick()">
             {{section.title}}
@@ -10,4 +10,4 @@
     <div class="comment-card-list">
         <app-comment-card *ngFor="let comment of section.comments" [sectionId]="sectionId" [comment]="comment"></app-comment-card>
     </div>
-</div>
+</section>

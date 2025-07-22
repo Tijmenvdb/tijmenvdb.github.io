@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, debounceTime, filter, Observable, of } from 'rxjs';
 import { Comment, CommentSection } from '../models/comment.models';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CommentDataService {
+export class CommentDataService implements OnDestroy {
 
   isDrawerOpen = false;
   
@@ -21,6 +21,17 @@ export class CommentDataService {
       this.loadQueue$.next([]);
       this.loadComments(sectionIds);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.loadQueue$.complete();
+
+    const sectionIterator =  this.sections.values();
+    var section$ = sectionIterator.next();
+    while(!section$.done) {
+      section$.value?.complete();
+      section$ = sectionIterator.next();
+    }
   }
 
   initHook(sectionId: string, title: string, order: number): BehaviorSubject<CommentSection> {
@@ -87,16 +98,19 @@ export class CommentDataService {
           date: this.mockDate(1, 'hours'),
           replies: [
             {
+              id: "4",
               username: "User A",
               message: "This is a reply by User A!",
               date: this.mockDate(30, 'minutes'),
             },
             {
+              id: "5",
               username: "User B",
               message: "This is a reply by User B!",
               date: this.mockDate(39, 'minutes'),
             },
             {
+              id: "6",
               username: "User C",
               message: "This is a reply by User C!",
               date: this.mockDate(45, 'minutes'),
@@ -110,16 +124,19 @@ export class CommentDataService {
           date: this.mockDate(5, 'hours'),
           replies: [
             {
+              id: "7",
               username: "User A",
               message: "This is a reply by User A!",
               date: this.mockDate(50, 'minutes'),
             },
             {
+              id: "8",
               username: "User B",
               message: "This is a reply by User B!",
               date: this.mockDate(1, 'hours'),
             },
             {
+              id: "9",
               username: "User C",
               message: "This is a reply by User C!",
               date: this.mockDate(2, 'hours'),
@@ -133,16 +150,19 @@ export class CommentDataService {
           date: this.mockDate(2, 'days'),
           replies: [
             {
+              id: "10",
               username: "User A",
               message: "This is a reply by User A!",
               date: this.mockDate(3, 'hours'),
             },
             {
+              id: "11",
               username: "User B",
               message: "This is a reply by User B!",
               date: this.mockDate(6, 'hours'),
             },
             {
+              id: "12",
               username: "User C",
               message: "This is a reply by User C!",
               date: this.mockDate(1, 'days'),
@@ -158,16 +178,19 @@ export class CommentDataService {
           date: this.mockDate(2, 'hours'),
           replies: [
             {
+              id: "13",
               username: "User A",
               message: "This is a reply by User A!",
               date: this.mockDate(0, 'seconds'),
             },
             {
+              id: "14",
               username: "User B",
               message: "This is a reply by User B!",
               date: this.mockDate(30, 'seconds'),
             },
             {
+              id: "15",
               username: "User C",
               message: "This is a reply by User C!",
               date: this.mockDate(20, 'minutes'),
@@ -241,7 +264,7 @@ export class CommentDataService {
     this.updateDrawer();
   }
 
-  commentIndex = 4; // temp
+  commentIndex = 16; // temp
   sendComment(comment: Comment): Observable<Comment> {
     comment.id = `${this.commentIndex++}`;
     comment.isNew = false;

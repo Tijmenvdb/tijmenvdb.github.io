@@ -59,6 +59,8 @@ export class CommentCardComponent {
       this.dataService.updateSection(this.sectionId);
       this.elementService.deregisterElement('comment', this.sectionId);
       this.elementService.registerElement('comment', this.card.nativeElement, comment.id);
+
+      setTimeout(() => DomUtils.getFirstFocusableElement(this.card.nativeElement)?.focus({preventScroll: true}), 1);
     });
   }
 
@@ -75,6 +77,8 @@ export class CommentCardComponent {
       this.showReply = false;
       this.comment.replies.unshift(comment);
       this.dataService.updateSection(this.sectionId);
+
+      setTimeout(() => DomUtils.getFirstFocusableElement(this.card.nativeElement)?.focus({preventScroll: true}), 1);
     });
   }
 

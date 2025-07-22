@@ -11,7 +11,7 @@ import { CommentSection } from '../../models/comment.models';
   templateUrl: './comment-hook.component.html',
   styleUrl: './comment-hook.component.scss'
 })
-export class CommentHookComponent implements OnInit, OnChanges, OnDestroy {
+export class CommentHookComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input()
   sectionId!: string;
@@ -36,6 +36,10 @@ export class CommentHookComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
+  ngOnDestroy(): void {
+    this.dataService.destroyHook(this.sectionId)
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if(!this.section$) {
       return;
@@ -51,10 +55,6 @@ export class CommentHookComponent implements OnInit, OnChanges, OnDestroy {
     if(changes['order'].previousValue != changes['order'].currentValue) {
       this.dataService.updateDrawer();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.dataService.destroyHook(this.sectionId)
   }
 
   onClick() {

@@ -1,14 +1,16 @@
 
 <div #card [commentElement]="'comment'" [elementId]="comment.id" class="comment-card" tabIndex="-1">
-    <ng-container *ngIf="!comment.isNew; else newComment">
+    <article class="comment-container" *ngIf="!comment.isNew; else newComment" [attr.aria-labelledby]="'comment-' + comment.id">      
         <div class="comment">
-            <div class="flex-container">
+            <header [id]="'comment-' + comment.id" class="flex-container">
                 <span class="secondary-text font-weight-semibold">{{comment.username}}</span>
-                <span class="secondary-text font-weight-normal">{{comment.date | relativeTime}}</span>
-            </div>
+                <time class="secondary-text font-weight-normal" [attr.datetime]="comment.date | date:'yyyy-MM-ddTHH:mm:ssZ'">
+                    {{comment.date | relativeTime}}
+                </time>
+            </header>
             <p>{{comment.message}}</p>
             <div class="flex-container">
-                <button #replyButton *ngIf="!showReply" class="secondary-button inline-icon" (click)="toggleReplyInput(true)">
+                <button *ngIf="!showReply" class="secondary-button inline-icon" (click)="toggleReplyInput(true)" aria-label="Make a Reply">
                     <span class="material-symbols-outlined">
                         reply
                     </span>
@@ -18,36 +20,40 @@
                 </button>
             </div>
         </div>
-        <div class="comment left-padding" *ngIf="showReply">
-            <input #replyInput type="text" [(ngModel)]="message" placeholder="Reply to comment..." class="text-input" aria-label="Reply" (keydown.enter)="onReply()">
+        <form #replyForm="ngForm" (ngSubmit)="onReply()" autocomplete="off" class="comment left-padding" *ngIf="showReply">
+            <input type="text" name="reply" [(ngModel)]="message" placeholder="Reply to comment..." class="text-input" aria-label="Reply">
             <div class="flex-container flex-end">
-                <button class="secondary-button" (click)="toggleReplyInput(false)">
+                <button type="button" class="secondary-button" (click)="toggleReplyInput(false)">
                     Cancel
                 </button>
-                <button class="secondary-button" (click)="onReply()">
+                <button type="submit" class="secondary-button">
                     Reply
                 </button>
             </div>
-        </div>
-        <div class="comment left-padding" *ngFor="let reply of comment.replies">
-            <div class="flex-container">
-                <span class="secondary-text font-weight-semibold">{{reply.username}}</span>
-                <span class="secondary-text font-weight-normal">{{reply.date | relativeTime}}</span>
-            </div>
-            <p>{{reply.message}}</p>
-        </div>
-    </ng-container>
+        </form>
+        <section class="comment-container" aria-label="Replies">
+            <article class="comment left-padding" *ngFor="let reply of comment.replies" [attr.aria-labelledby]="'reply-' + reply.id">
+                <header [id]="'reply-' + reply.id" class="flex-container">
+                    <span class="secondary-text font-weight-semibold">{{reply.username}}</span>
+                    <time class="secondary-text font-weight-normal" [attr.datetime]="reply.date | date:'yyyy-MM-ddTHH:mm:ssZ'">
+                        {{reply.date | relativeTime}}
+                    </time>
+                </header>
+                <p>{{reply.message}}</p>
+            </article>
+        </section>
+    </article>
     <ng-template #newComment>
-        <div class="comment">
-            <input type="text" [(ngModel)]="message" placeholder="Add a comment..." class="text-input" aria-label="Comment" (keydown.enter)="onSend()">
+        <form #commentForm="ngForm" (ngSubmit)="onSend()" autocomplete="off" class="comment">
+            <input type="text" name="comment" [(ngModel)]="message" placeholder="Add a comment..." class="text-input" aria-label="Comment">
             <div class="flex-container flex-end">
-                <button class="secondary-button" (click)="onCancel()">
+                <button type="button" class="secondary-button" (click)="onCancel()">
                     Cancel
                 </button>
-                <button class="secondary-button" (click)="onSend()">
+                <button type="submit" class="secondary-button">
                     Send
                 </button>
             </div>
-        </div>
+        </form>
     </ng-template>
 </div>

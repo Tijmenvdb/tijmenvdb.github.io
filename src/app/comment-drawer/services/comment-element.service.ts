@@ -1,26 +1,32 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { ElementRef, Injectable, OnDestroy } from '@angular/core';
 import { CommentElementType } from '../models/comment.models';
 import { DomUtils } from '../../shared/utils/dom-utils';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CommentElementService {
+export class CommentElementService implements OnDestroy {
 
   private main?: HTMLElement;
   private drawer?: HTMLElement;
   private header?: HTMLElement;
 
-  public hooks = new Map<string, HTMLElement>();
+  private hooks = new Map<string, HTMLElement>();
   private sections = new Map<string, HTMLElement>();
-  public comments = new Map<string, HTMLElement>();
+  private comments = new Map<string, HTMLElement>();
 
   private activeHookId?: string;
   private activeCommentId?: string;
 
   public returnHook?: HTMLElement;
 
+  private defocusHandler = (event: MouseEvent) => {};
+
   constructor() { }
+
+  ngOnDestroy(): void {
+    document.removeEventListener('click', this.defocusHandler);
+  }
 
   registerElement(type: CommentElementType, element: HTMLElement, id?: string): void {
     switch(type) {
@@ -88,6 +94,7 @@ export class CommentElementService {
 
   private deactiveElement(): void {
     if(!this.activeCommentId || !this.activeHookId) {
+
       return;
     }
 
@@ -111,10 +118,10 @@ export class CommentElementService {
       return;
     }
 
-    const handler = (event: MouseEvent) => {
+    this.defocusHandler = (event: MouseEvent) => {
       setTimeout(() => {
         if(!this.activeCommentId || !this.activeHookId) {
-          document.removeEventListener('click', handler);
+          document.removeEventListener('click', this.defocusHandler);
           return;
         }
 
@@ -122,12 +129,12 @@ export class CommentElementService {
         const currHook = this.hooks.get(this.activeHookId);
         if (!currComment?.contains(event.target as Node) && !currComment?.contains(document.activeElement) && !currHook?.contains(document.activeElement)) {
           this.deactiveElement();
-          document.removeEventListener('click', handler);
+          document.removeEventListener('click', this.defocusHandler);
         }
       }, 1)
     }
 
-    document.addEventListener('click', handler);
+    document.addEventListener('click', this.defocusHandler);
   }
 
   focusHook(sectionId: string, commentId: string) {

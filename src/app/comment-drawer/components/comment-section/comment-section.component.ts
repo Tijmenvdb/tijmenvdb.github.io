@@ -24,7 +24,6 @@ export class CommentSectionComponent {
 
   onAddComment() {
     this.dataService.addComment(this.sectionId);
-
     setTimeout(() => this.elementService.focusSection(this.sectionId, this.sectionId), 1);
   }
 
