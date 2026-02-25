@@ -4,11 +4,22 @@
 
 .comment-card {
     @include card(.5rem, 1rem);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
 
-    &:focus-within {
+    .comment-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .comment-container:empty {
+        display: none
+    }
+
+    * {
+        outline-color: $black-color-500;
+    }
+
+    &.focus {
         outline: solid 3px #3b83f6;
         outline-offset: -3px;
     }
@@ -16,7 +27,7 @@
     .comment {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: .5rem;
     }
 
     .left-padding {

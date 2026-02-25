@@ -1,27 +1,51 @@
-<app-drawer class="comments-drawer-var" [behavior]="isReducedLayout? isMobileLayout? 'fullscreen' : 'overlay' : 'push'" [position]="'right'" [isOpen]="isCommentOpen" [ariaLabelledby]="'comment-header'" (toggle)="isCommentOpen = $event">
-    <main main-content class="user-profile-container" aria-labelledby="main-title">
-        <header class="flex-container">
-            <h1 id="main-title">User Profile</h1>
-            <button class="primary-button inline-icon" (click)="isCommentOpen = !isCommentOpen">
-                <span>
-                    Edit
-                </span>
-                <span class="material-symbols-outlined">
-                    edit
-                </span>
-            </button>
-        </header>
+<app-comment-drawer>
+    <main aria-labelledby="main-title">
+        <div class="user-profile-container">
+            <header class="flex-container">
+                <h1 id="main-title">User Profile</h1>
+                <button class="primary-button inline-icon">
+                    <span>
+                        Edit
+                    </span>
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+                </button>
+            </header>
+            <div class="box-container">
+                <div id="personal-info-container" class="box">
+                    <h3>Personal Info</h3>
+                    <app-comment-hook
+                        [sectionId]="'personal-info'"
+                        [title]="'Personal Info'"
+                        [order]="0">
+                    </app-comment-hook>
+                </div>
+                <div id="preferences-container" class="box">
+                    <h3>Preferences</h3>
+                    <app-comment-hook
+                        [sectionId]="'preferences'"
+                        [title]="'Preferences'"
+                        [order]="1">
+                    </app-comment-hook>
+                </div>
+                <div id="financial-profile-container" class="box">
+                    <h3>Financial Profile</h3>
+                    <app-comment-hook
+                        [sectionId]="'financial-profile'"
+                        [title]="'Financial Profile'"
+                        [order]="3">
+                    </app-comment-hook>
+                </div>
+                <div id="test-profile-container" class="box">
+                    <h3>Test Profile</h3>
+                    <app-comment-hook
+                        [sectionId]="'test-profile'"
+                        [title]="'Test Profile'"
+                        [order]="4">
+                    </app-comment-hook>
+                </div>
+            </div>
+        </div>
     </main>
-    <div drawer-content class="comments-drawer" tabIndex="-1">
-        <h1 class="drawer-header flex-container flex-space-between">
-            <span id="comment-header">
-                Comments
-            </span>
-            <button class="material-symbols-outlined tertiary-button" aria-label="Close Drawer" (click)="isCommentOpen = !isCommentOpen">
-                close
-            </button>
-        </h1>
-        <app-comment-section *ngFor="let commentSection of commentSections" [title]="commentSection.title" [comments]="commentSection.comments">
-        </app-comment-section>
-    </div>
-</app-drawer>
+</app-comment-drawer>

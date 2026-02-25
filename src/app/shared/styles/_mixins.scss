@@ -65,6 +65,27 @@
 
 // --------------- Cards and Containers ---------------
 
+@mixin scroll-container() {
+    overflow: auto;
+    scroll-behavior: smooth;
+
+    @supports (scrollbar-color: auto) {
+        scrollbar-color: $black-color-300 transparent;
+    }
+
+    @supports selector(::-webkit-scrollbar) {
+        &::-webkit-scrollbar {
+            background: transparent;
+            width: 14px
+        }
+        &::-webkit-scrollbar-thumb {
+            border-radius: 20px;
+            border: solid 3px transparent;
+            box-shadow: inset 20px 0 $black-color-300;
+        }
+    }
+}
+
 @mixin card($border-radius, $padding) {
     background-color: $white-color-500;
     box-shadow: $container-shadow;

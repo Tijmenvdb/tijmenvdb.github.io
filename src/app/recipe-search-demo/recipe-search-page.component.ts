@@ -4,7 +4,7 @@ import { NavBarComponent } from '../shared/components/nav-bar/nav-bar.component'
 
 @Component({
   selector: 'app-recipe-search-page',
-  imports: [DrawerComponent, NavBarComponent],
+  imports: [DrawerComponent],
   templateUrl: './recipe-search-page.component.html',
   styleUrl: './recipe-search-page.component.scss'
 })

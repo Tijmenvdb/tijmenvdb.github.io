@@ -1,0 +1,11 @@
+@use '../../../shared/styles/colors' as *;
+@use '../../../shared/styles/variables' as *;
+
+:host {
+    display: inline-block;
+    line-height: 0;
+}
+
+.focus {
+    color: $primary-color-500;
+}

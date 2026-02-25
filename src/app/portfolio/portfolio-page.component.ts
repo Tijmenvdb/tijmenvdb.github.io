@@ -1,4 +1,3 @@
-import { ViewportScroller } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 

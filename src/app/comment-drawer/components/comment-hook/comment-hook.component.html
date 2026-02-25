@@ -1,0 +1,9 @@
+
+<button
+    [commentElement]="'hook'"
+    [elementId]="sectionId"
+    class="section-title tertiary-button material-symbols-outlined"
+    [attr.aria-label]="isEmpty? 'Add Comment' : 'Show Comments'"
+    (click)="onClick()">
+    {{isEmpty? 'add_comment' : 'chat'}}
+</button>

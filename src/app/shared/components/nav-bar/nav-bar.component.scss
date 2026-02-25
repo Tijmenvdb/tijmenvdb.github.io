@@ -124,10 +124,11 @@
     height: calc(100% - 3.5rem);
 
     .side-nav {
+        @include scroll-container();
+
         color: $black-color-500;
         background-color: $white-color-500;
         flex-grow: 1;
-        overflow: auto;
 
         .icon-link {
             width: 1.5rem;

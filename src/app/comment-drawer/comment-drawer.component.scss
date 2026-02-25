@@ -1,0 +1,46 @@
+@use '../shared/styles/variables' as *;
+@use '../shared/styles/colors' as *;
+@use '../shared/styles/mixins' as *;
+
+:host {
+    flex: 1 1 auto;
+}
+
+.main-container {
+    @include scroll-container();
+    width: 100%;
+}
+
+.comments-drawer-var {
+    --drawer-size: 25rem;
+    --shadow: none;
+    --z-index-drawer: 100;
+    --overlay-color: #{$white-color-600};
+    --overlay-opacity: .5;
+}
+
+.comments-drawer {
+    @include scroll-container();
+    
+    flex-grow: 1;
+    scroll-behavior: smooth;
+    padding-top: 5rem;
+
+    .drawer-header {
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        right: 0;
+
+        transition: margin .1s ease;
+        margin: 1rem .5rem;
+        @include card(.5rem, 1rem);
+        box-shadow: 0.25rem 0.25rem 0.5rem 0.25rem rgba($black-color-500, 20%);
+    }
+
+    app-comment-section:last-child {
+        display: block;
+        min-height: calc(100% - 1rem);
+    }
+}

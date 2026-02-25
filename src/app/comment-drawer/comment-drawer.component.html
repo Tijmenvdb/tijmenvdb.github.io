@@ -1,0 +1,25 @@
+<app-drawer class="comments-drawer-var"
+    [behavior]="isReducedLayout? isMobileLayout? 'fullscreen' : 'overlay' : 'push'"
+    [position]="'right'"
+    [isOpen]="dataService.isDrawerOpen"
+    [ariaLabelledby]="'comment-drawer-label'"
+    [targetReturnElement]="elementService.returnHook"
+    (toggle)="dataService.isDrawerOpen = $event">
+    <div main-content [commentElement]="'main'" class="main-container">
+        <ng-content>
+        </ng-content>
+    </div>
+    <div drawer-content [commentElement]="'drawer'" id="comment-drawer" class="comments-drawer" tabIndex="-1">
+        <h1 [commentElement]="'header'" id="comment-drawer-header" class="drawer-header flex-container flex-space-between">
+            <span id="comment-drawer-label">
+                Comments
+            </span>
+            <button class="material-symbols-outlined tertiary-button" aria-label="Close Drawer" (click)="dataService.isDrawerOpen = false">
+                close
+            </button>
+        </h1>
+        <app-comment-section class='comment-section' *ngFor="let entry of dataService.sections | sectionOrder; trackBy: trackBySectionId"
+            [sectionId]="entry.sectionId" [section$]="entry.section$">
+        </app-comment-section>
+    </div>
+</app-drawer>

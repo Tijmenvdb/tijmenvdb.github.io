@@ -165,11 +165,14 @@ a {
 }
 
 .tertiary-button {
+    border-radius: 0.5rem;
+
     transition: $scale-transition,
         $outline-transition;
 
     @include scale-click(1.10, 0.95);
     @include outline-focus($primary-color-500);
+    outline-offset: 3px;
 }
 
 input {

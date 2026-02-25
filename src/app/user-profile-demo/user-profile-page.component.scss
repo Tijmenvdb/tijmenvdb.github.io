@@ -4,123 +4,35 @@
 
 :host {
     flex: 1 1 auto;
-    overflow: auto;
-    scroll-behavior: smooth;
-}
-
-.nav-bar {
-    box-sizing: border-box;
-    display: flex;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-
-    padding: .25rem 1.5rem;
-    gap: .5rem;
-    align-items: center;
-
-    background-color: $black-color-500;
-    box-shadow: 4px 4px 4px rgba($black-color-500, 20%);
-    color: $white-color-500;
-
-    a {
-        padding: .5rem;
-        border-radius: 100rem;
-        transition: $color-transition,
-            $scale-transition,
-            $outline-transition;
-
-        @include scale-click();
-        @include color-click($primary-color-500, $primary-color-600);
-        @include outline-focus($white-color-500);
-    }
-
-    .icon-link {
-        width: 2rem;
-        height: 2rem;
-    }
 }
 
 .user-profile-container {
     transition: margin .1s ease, padding .1s ease;
 
     @include card(1rem, 2rem);
+    margin: 2rem;
+
     @include respond-lg {
         @include card(1rem, 1rem);
-    }
-
-    margin: 2rem;
-    @include respond-lg {
         margin: 1rem .5rem;
     }
-
-    flex-grow: 1;
 }
 
-.comments-drawer-var {
-    --drawer-size: 25rem;
-    --shadow: none;
-    --z-index-drawer: 0;
-    --overlay-color: #{$white-color-600};
-    --overlay-opacity: .5;
+.box-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
-.comments-drawer {
+.box {
     flex-grow: 1;
-    overflow: auto;
-    // background-image: linear-gradient(to left, $white-color-600 90%, rgba(0,0,0,0)); 
+    background-color: antiquewhite;
+    margin: 1rem;
+    outline: solid 1rem darkorange;
+    min-height: 100vh;
+    min-width: max(400px, 40%);
 
-    .drawer-header {
-        transition: margin .1s ease;
-        margin: 1rem 1.5rem;
-
-        @include respond-lg {
-            margin: 1rem 1rem
-        }
+    @include respond-lg {
+        min-width: 80%;
     }
-
-    .comment-section {
-
-        .section-header {
-            transition: margin .1s ease;
-            margin: 1rem 1.5rem .5rem 1.5rem;
-
-            @include respond-lg {
-                margin: 1rem 1rem .5rem 1rem;
-            }
-        }
-
-        .comment-card-list {
-            display: flex;
-            flex-direction: column;
-            gap: .5rem;
-
-            transition: margin .1s ease;
-            margin: .5rem 1rem 1rem 1rem;
-            @include respond-lg {
-                margin: .5rem .5rem 1rem .5rem;
-            }
-
-            .comment-card {
-                @include card(.5rem, 1rem);
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-
-                &.focus {
-                    outline: solid 3px #3b83f6;
-                    outline-offset: -3px;
-                }
-
-                .comment {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
-            }
-
-        }
-
-    }
-
 }

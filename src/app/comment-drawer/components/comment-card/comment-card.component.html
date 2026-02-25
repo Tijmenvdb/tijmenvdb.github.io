@@ -1,0 +1,59 @@
+
+<div #card [commentElement]="'comment'" [elementId]="comment.id" class="comment-card" tabIndex="-1">
+    <article class="comment-container" *ngIf="!comment.isNew; else newComment" [attr.aria-labelledby]="'comment-' + comment.id">      
+        <div class="comment">
+            <header [id]="'comment-' + comment.id" class="flex-container">
+                <span class="secondary-text font-weight-semibold">{{comment.username}}</span>
+                <time class="secondary-text font-weight-normal" [attr.datetime]="comment.date | date:'yyyy-MM-ddTHH:mm:ssZ'">
+                    {{comment.date | relativeTime}}
+                </time>
+            </header>
+            <p>{{comment.message}}</p>
+            <div class="flex-container">
+                <button *ngIf="!showReply" class="secondary-button inline-icon" (click)="toggleReplyInput(true)" aria-label="Make a Reply">
+                    <span class="material-symbols-outlined">
+                        reply
+                    </span>
+                    <span>
+                        Reply
+                    </span>
+                </button>
+            </div>
+        </div>
+        <form #replyForm="ngForm" (ngSubmit)="onReply()" autocomplete="off" class="comment left-padding" *ngIf="showReply">
+            <input type="text" name="reply" [(ngModel)]="message" placeholder="Reply to comment..." class="text-input" aria-label="Reply">
+            <div class="flex-container flex-end">
+                <button type="button" class="secondary-button" (click)="toggleReplyInput(false)">
+                    Cancel
+                </button>
+                <button type="submit" class="secondary-button">
+                    Reply
+                </button>
+            </div>
+        </form>
+        <section class="comment-container" aria-label="Replies">
+            <article class="comment left-padding" *ngFor="let reply of comment.replies" [attr.aria-labelledby]="'reply-' + reply.id">
+                <header [id]="'reply-' + reply.id" class="flex-container">
+                    <span class="secondary-text font-weight-semibold">{{reply.username}}</span>
+                    <time class="secondary-text font-weight-normal" [attr.datetime]="reply.date | date:'yyyy-MM-ddTHH:mm:ssZ'">
+                        {{reply.date | relativeTime}}
+                    </time>
+                </header>
+                <p>{{reply.message}}</p>
+            </article>
+        </section>
+    </article>
+    <ng-template #newComment>
+        <form #commentForm="ngForm" (ngSubmit)="onSend()" autocomplete="off" class="comment">
+            <input type="text" name="comment" [(ngModel)]="message" placeholder="Add a comment..." class="text-input" aria-label="Comment">
+            <div class="flex-container flex-end">
+                <button type="button" class="secondary-button" (click)="onCancel()">
+                    Cancel
+                </button>
+                <button type="submit" class="secondary-button">
+                    Send
+                </button>
+            </div>
+        </form>
+    </ng-template>
+</div>

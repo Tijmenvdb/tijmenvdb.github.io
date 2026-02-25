@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { DomUtils } from '../../utils/dom-utils';
 
 @Component({
   selector: 'app-drawer',
@@ -29,10 +30,22 @@ export class DrawerComponent implements OnChanges {
   @Input()
   ariaLabelledby?: string;
 
+  @Input()
+  targetEntryElement?: HTMLElement | null;
+
+  @Input()
+  targetReturnElement?: HTMLElement | null;
+
   @Output()
   toggle: EventEmitter<boolean> = new EventEmitter();
 
+  @Input()
+  focusableElement?: HTMLElement | null;
+
   previouslyFocusedElement?: HTMLElement;
+
+  @Input()
+  returnElement?: HTMLElement | null
 
   roles: Record<string, string> = {
     'push' : 'complementary',
@@ -43,7 +56,9 @@ export class DrawerComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if(changes?.['isOpen'] && changes?.['isOpen'].currentValue != changes?.['isOpen'].previousValue && changes?.['isOpen'].currentValue) {
       this.previouslyFocusedElement = document.activeElement as HTMLElement;
-      setTimeout(() => this.getFocusableElements(this.drawer)?.[0]?.focus({ preventScroll: true }));
+      const entryElement = this.targetEntryElement? this.targetEntryElement : DomUtils.getFirstFocusableElement(this.drawer.nativeElement);
+
+      setTimeout(() => entryElement?.focus({ preventScroll: true }));
 
       if(this.behavior == 'overlay') {
         this.keydownEvent = this.focusTrap;
@@ -51,7 +66,9 @@ export class DrawerComponent implements OnChanges {
     }
 
     if(changes?.['isOpen'] && changes?.['isOpen'].currentValue != changes?.['isOpen'].previousValue && !changes?.['isOpen'].currentValue) {
-      setTimeout(() =>  this.previouslyFocusedElement?.focus({ preventScroll: true }));
+      const returnElement = this.targetReturnElement? this.targetReturnElement : this.previouslyFocusedElement;
+
+      setTimeout(() => returnElement?.focus({ preventScroll: true }));
       this.keydownEvent = () => {};
     }
   }
@@ -66,7 +83,7 @@ export class DrawerComponent implements OnChanges {
   }
 
   focusTrap(event: KeyboardEvent) {
-    const focusableElements = this.getFocusableElements(this.drawer);
+    const focusableElements = DomUtils.getFocusableElements(this.drawer.nativeElement);
     const firstElement = focusableElements?.[0];
     const lastElement = focusableElements?.[focusableElements?.length - 1];
     const activeElement = document.activeElement as HTMLElement;
@@ -84,18 +101,5 @@ export class DrawerComponent implements OnChanges {
     if(event.key == 'Escape') {
       this.toggleDrawer(false);
     }
-  }
-
-  getFocusableElements(container: ElementRef<HTMLElement>): NodeListOf<HTMLElement> {
-    const focusableSelectors = `
-      a[href],
-      button:not([disabled]),
-      textarea:not([disabled]),
-      input:not([disabled]),
-      select:not([disabled]),
-      [tabindex]:not([tabindex="-1"])
-    `;
-
-    return container?.nativeElement.querySelectorAll<HTMLElement>(focusableSelectors);
   }
 }

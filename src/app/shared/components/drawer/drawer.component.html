@@ -1,7 +1,6 @@
 <div class="main"
     [class.drawer-open]="isOpen"
     [ngClass]="[position, behavior]"
-    [attr.aria-hidden]="disableMain()? true : null"
     [attr.inert]="disableMain()? true : null">
     <ng-content select="[main-content]"></ng-content>
 </div>
@@ -24,7 +23,6 @@
     [attr.aria-modal]="behavior == 'overlay'? true : null"
     [attr.aria-label]="ariaLabel"
     [attr.aria-labelledby]="ariaLabelledby"
-    [attr.aria-hidden]="!isOpen? true : null"
     [attr.inert]="!isOpen? true : null">
     <ng-content select="[drawer-content]"></ng-content>
 </div>
